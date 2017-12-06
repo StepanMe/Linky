@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Сервис сокращения ссылок Linky{% endblock %}</title>
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>Сервис сокращения ссылок</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post" action="{{ path('home_page') }}">
+                <div class="form-group">
+                    <label>Введите URL</label>
+                    <input type="text" class="form-control" id="url" name="long_url" placeholder="Например, https://www.yandex.ru" />
+                </div>
+                <button type="submit" class="btn btn-primary">Сократить</button>
+            </form>
+        </div>
+    </div>
+    {% if result is defined and result == -1 %}
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Ссылка не найдена</h2>
+                <p>Возможно, она ещё не создана</p>
+            </div>
+        </div>
+    {% endif %}
+    {% if result is defined and result == 0 %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Ссылка уже есть в базе данных</h2>
+            <p>Вот она: <a target="_blank" href="{{ url('home_page') ~ short_url }}">{{ url('home_page') ~ short_url }}</a></p>
+        </div>
+    </div>
+    {% endif %}
+    {% if result is defined and result == 1 %}
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Ссылка создана:</h2>
+                <p>Вот она: <a target="_blank" href="{{ url('home_page') ~ short_url }}">{{ url('home_page') ~ short_url }}</a></p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted"></p>
+    </div>
+</footer>
+
+</body>
+</html>
